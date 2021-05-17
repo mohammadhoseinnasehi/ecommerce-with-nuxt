@@ -1,9 +1,12 @@
 const multer = require("multer");
-const path = require("path");
 
 var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads");
+  },
   filename: (req, file, cb) => {
     // console.log(file);
+
     cb(null, Date.now() + file.originalname);
   },
 });
@@ -15,12 +18,11 @@ const fileFilter = (req, file, cb) => {
     cb(null, false);
   }
 };
-
-// const limits = { fileSize: 1024 * 1024 * 5 };
+const limits = { fileSize: 1024 * 1024 * 5 };
 
 var upload = multer({
   storage: storage,
-  // limits: limits,
+  limits: limits,
   fileFilter: fileFilter,
 });
-module.exports = upload;
+module.exports=upload;
